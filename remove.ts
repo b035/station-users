@@ -14,4 +14,6 @@ export default async function remove(USER_DIR: string, args: string[]) {
 
 	//block user number
 	(await Registry.write(user_path, timestamp)).unwrap();
+
+	console.log(1);
 }

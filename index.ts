@@ -2,6 +2,7 @@
 
 import create from "./create.js";
 import remove from "./remove.js";
+import get from "./get.js";
 
 const USER_DIR = "users";
 
@@ -15,7 +16,7 @@ function main(args: string[]) {
 	switch (subcommand) {
 		case "create": return create(USER_DIR, args);
 		case "remove": return remove(USER_DIR, args);
-		case "get": return;
+		case "get": return get(USER_DIR, args);
 		case "set": return;
 		case "auth": return;
 
