@@ -14,6 +14,7 @@ function main(args: string[]) {
 		case "remove": return;
 		case "get": return;
 		case "set": return;
+		case "auth": return;
 
 		default: throw `"${subcommand}": invalid subcommand.`;
 	}
