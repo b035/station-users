@@ -1,8 +1,8 @@
 import Path from "path";
-import Bcrypt from "bcrypt"
 
 import { log, Registry } from "@the-stations-project/sdk";
 import set from "./set.js";
+import change_pswd from "./change_pswd.js";
 
 export default async function create(USER_DIR: string, args: string[]) {
 	const [ dispname, pswd ] = args;
@@ -31,18 +31,17 @@ export default async function create(USER_DIR: string, args: string[]) {
 	const user_path = Path.join(USER_DIR, unum);
 	(await Registry.mkdir(user_path)).or_panic();
 
-	//hash password
-	const hash = await Bcrypt.hash(pswd, 10);
 
 	log("ACTIVITY", `User management: started creating account "${unum}".`);
 
 	//store data
 	for (let args of [
 		[unum, "dispname", dispname],
-		[unum, "hash", hash],
 	]) {
 		await set(USER_DIR, args);
 	}
+
+	await change_pswd(USER_DIR, [unum, pswd]);
 	
 	log("ACTIVITY", `User management: created account "${unum}".`);
 	return 1;
