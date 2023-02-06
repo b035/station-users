@@ -2,6 +2,7 @@ import Path from "path";
 import Bcrypt from "bcrypt"
 
 import { log, Registry } from "@the-stations-project/sdk";
+import set from "./set.js";
 
 export default async function create(USER_DIR: string, args: string[]) {
 	const [ dispname, pswd ] = args;
@@ -10,7 +11,7 @@ export default async function create(USER_DIR: string, args: string[]) {
 
 	//generate number
 	const unum_base = generate_number(dispname);
-	const taken_numbers = (await Registry.ls(USER_DIR)).unwrap().value!;
+	const taken_numbers = (await Registry.ls(USER_DIR)).or_panic().value!;
 	//numbers with same base
 	const highest_suffix = taken_numbers
 		//match bases
@@ -28,7 +29,7 @@ export default async function create(USER_DIR: string, args: string[]) {
 
 	//create directory
 	const user_path = Path.join(USER_DIR, unum);
-	(await Registry.mkdir(user_path)).unwrap();
+	(await Registry.mkdir(user_path)).or_panic();
 
 	//hash password
 	const hash = await Bcrypt.hash(pswd, 10);
@@ -36,12 +37,11 @@ export default async function create(USER_DIR: string, args: string[]) {
 	log("ACTIVITY", `User management: started creating account "${unum}".`);
 
 	//store data
-	for (let [path, content] of [
-		["dispname", dispname],
-		["hash", hash],
+	for (let args of [
+		[unum, "dispname", dispname],
+		[unum, "hash", hash],
 	]) {
-		(await Registry.write(Path.join(user_path, path), content)).unwrap();
-
+		await set(USER_DIR, args);
 	}
 	log("ACTIVITY", `User management: created account "${unum}".`);
 	console.log(1);
