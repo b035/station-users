@@ -15,5 +15,5 @@ export default async function remove(USER_DIR: string, args: string[]) {
 	//block user number
 	(await Registry.write(user_path, timestamp)).or_panic();
 
-	console.log(1);
+	return 1;
 }

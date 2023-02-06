@@ -11,5 +11,6 @@ export default async function get(USER_DIR: string, args: string[]) {
 	const path = Path.join(USER_DIR, unum, prop);
 
 	const value = (await Registry.read(path)).or_panic().value!;
-	console.log(value);
+
+	return value;
 }

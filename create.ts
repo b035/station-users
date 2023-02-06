@@ -43,8 +43,9 @@ export default async function create(USER_DIR: string, args: string[]) {
 	]) {
 		await set(USER_DIR, args);
 	}
+	
 	log("ACTIVITY", `User management: created account "${unum}".`);
-	console.log(1);
+	return 1;
 }
 
 function generate_number(dispname: string): string {
