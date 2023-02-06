@@ -1,8 +1,12 @@
 {
-  "name": "station-user-management",
+  "name": "@the-stations-project/user-management",
   "version": "0.0.1-alpha",
   "description": "Manages user accounts.",
   "main": "index.js",
+  "bin": {
+	  "usrman": "index.js",
+	  "usrman-init": "init.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
