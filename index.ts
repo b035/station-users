@@ -1,6 +1,9 @@
 #! /usr/bin/env node
 
 import create from "./create.js";
+import remove from "./remove.js";
+
+const USER_DIR = "users";
 
 function main(args: string[]) {
 	//remove first two arguments
@@ -10,8 +13,8 @@ function main(args: string[]) {
 	const subcommand = args.splice(0, 1)[0];
 
 	switch (subcommand) {
-		case "create": return create(args);
-		case "remove": return;
+		case "create": return create(USER_DIR, args);
+		case "remove": return remove(USER_DIR, args);
 		case "get": return;
 		case "set": return;
 		case "auth": return;

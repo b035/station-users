@@ -3,9 +3,7 @@ import Bcrypt from "bcrypt"
 
 import { log, Registry } from "@the-stations-project/sdk";
 
-const USER_DIR = "users";
-
-export default async function create(args: string[]) {
+export default async function create(USER_DIR: string, args: string[]) {
 	const [ dispname, pswd ] = args;
 
 	if (dispname == undefined || pswd == undefined) throw "dispname or pswd missing.";
@@ -23,9 +21,10 @@ export default async function create(args: string[]) {
 		.filter(x => /^[0-9]$/.test(x))
 		//reverse order (-> highest first)
 		.reverse()
-		//get highest
-		[0];
-	const unum = `${unum_base}-${parseInt(highest_suffix) + 1}`;
+		//get highest or use 0
+		[0] ?? 0;
+	const unum_suffix = parseInt(highest_suffix) + 1;
+	const unum = `${unum_base}-${unum_suffix}`;
 
 	//create directory
 	const user_path = Path.join(USER_DIR, unum);
