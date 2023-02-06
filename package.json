@@ -1,0 +1,27 @@
+{
+  "name": "station-user-management",
+  "version": "0.0.1-alpha",
+  "description": "Manages user accounts.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/b035/station-user-management.git"
+  },
+  "keywords": [
+    "station",
+    "stations",
+    "project"
+  ],
+  "author": "b035",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b035/station-user-management/issues"
+  },
+  "homepage": "https://github.com/b035/station-user-management#readme",
+  "dependencies": {
+    "@the-stations-project/sdk": "^0.1.0-beta1"
+  }
+}
