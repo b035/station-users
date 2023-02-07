@@ -1,6 +1,6 @@
 import Path from "path";
 
-import { log, Registry } from "@the-stations-project/sdk";
+import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 
 export default async function remove(USER_DIR: string, args: string[]) {
 	const unum = args[0];
@@ -15,5 +15,5 @@ export default async function remove(USER_DIR: string, args: string[]) {
 	//block user number
 	(await Registry.write(user_path, timestamp)).or_panic();
 
-	return 0;
+	return ExitCodes.Ok;
 }

@@ -1,6 +1,6 @@
 import Bcrypt from "bcrypt";
 
-import { log } from "@the-stations-project/sdk";
+import { ExitCodes, log } from "@the-stations-project/sdk";
 import set from "./set";
 
 export default async function change_pswd(USER_DIR: string, args: string[]) {
@@ -11,5 +11,5 @@ export default async function change_pswd(USER_DIR: string, args: string[]) {
 	set(USER_DIR, [unum, "hash", hash]);	
 	log("ACTIVITY", `User management: changed password for "${unum}".`);
 
-	return 0
+	return ExitCodes.Ok; 
 }

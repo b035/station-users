@@ -1,6 +1,6 @@
 import Path from "path";
 
-import { log, Registry } from "@the-stations-project/sdk";
+import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 import set from "./set.js";
 import change_pswd from "./change_pswd.js";
 
@@ -44,7 +44,7 @@ export default async function create(USER_DIR: string, args: string[]) {
 	await change_pswd(USER_DIR, [unum, pswd]);
 	
 	log("ACTIVITY", `User management: created account "${unum}".`);
-	return 0
+	return ExitCodes.Ok;
 }
 
 function generate_number(dispname: string): string {
@@ -69,6 +69,6 @@ function get_letter_number(letter: string) {
 		case "t": case "u": case "v": return 8;
 		case "w": case "x": case "y": case "z": return 9;
 
-		default: return 0
+		default: return ExitCodes.Ok;
 	}
 }

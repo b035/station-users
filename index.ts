@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 
-import { start_service } from "@the-stations-project/sdk";
+import { start_service, ExitCodes } from "@the-stations-project/sdk";
 
 import create from "./create.js";
 import remove from "./remove.js";
@@ -20,7 +20,7 @@ async function main(subcommand: string, args: string[]) {
 		case "auth": return await auth(USER_DIR, args);
 		case "chpswd": return await change_pswd(USER_DIR, args);
 
-		default: throw `"${subcommand}": invalid subcommand.`;
+		default: throw ExitCodes.ErrNoCommand;
 	}
 }
 

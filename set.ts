@@ -1,6 +1,6 @@
 import Path from "path";
 
-import { log, Registry } from "@the-stations-project/sdk";
+import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 
 export default async function set(USER_DIR: string, args: string[]) {
 	const [ unum, prop, val ] = args;
@@ -12,5 +12,5 @@ export default async function set(USER_DIR: string, args: string[]) {
 
 	(await Registry.write(path, val)).or_panic();
 
-	return 0;
+	return ExitCodes.Ok;
 }
