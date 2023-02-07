@@ -1,5 +1,3 @@
-import Path from "path";
-
 import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 
 export default async function set(USER_DIR: string, args: string[]) {
@@ -8,7 +6,7 @@ export default async function set(USER_DIR: string, args: string[]) {
 	//security
 	if (prop == "hash") log("ACTIVITY", `User management: set hash for "${unum}".`);
 
-	const path = Path.join(USER_DIR, unum, prop);
+	const path = Registry.join_paths(USER_DIR, unum, prop);
 
 	(await Registry.write(path, val)).or_panic();
 

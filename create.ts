@@ -1,5 +1,3 @@
-import Path from "path";
-
 import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 import set from "./set.js";
 import change_pswd from "./change_pswd.js";
@@ -28,7 +26,7 @@ export default async function create(USER_DIR: string, args: string[]) {
 	const unum = `${unum_base}-${unum_suffix}`;
 
 	//create directory
-	const user_path = Path.join(USER_DIR, unum);
+	const user_path = Registry.join_paths(USER_DIR, unum);
 	(await Registry.mkdir(user_path)).or_panic();
 
 
