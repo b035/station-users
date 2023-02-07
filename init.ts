@@ -2,5 +2,9 @@
 
 import { Registry } from "@the-stations-project/sdk";
 
-Registry.write("services/usrman", "npx usrman");
-Registry.mkdir("users");
+async function main() {
+	(await Registry.write("services/usrman", "npx usrman")).or_panic();
+	(await Registry.mkdir("users")).or_panic();;
+}
+
+main();
