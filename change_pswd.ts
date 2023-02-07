@@ -11,5 +11,5 @@ export default async function change_pswd(USER_DIR: string, args: string[]) {
 	set(USER_DIR, [unum, "hash", hash]);	
 	log("ACTIVITY", `User management: changed password for "${unum}".`);
 
-	return 1;
+	return 0
 }

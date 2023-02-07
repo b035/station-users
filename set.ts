@@ -12,5 +12,5 @@ export default async function set(USER_DIR: string, args: string[]) {
 
 	(await Registry.write(path, val)).or_panic();
 
-	return 1;
+	return 0;
 }
