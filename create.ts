@@ -38,13 +38,13 @@ export default async function create(args: string[]) {
 	for (let args of [
 		[unum, "dispname", dispname],
 	]) {
-		await set(USER_DIR, args);
+		await set(args);
 	}
 
-	await change_pswd(USER_DIR, [unum, pswd]);
+	await change_pswd([unum, pswd]);
 	
 	log("ACTIVITY", `User management: created account "${unum}".`);
-	return ExitCodes.Ok;
+	return unum;
 }
 
 function generate_number(dispname: string): string {

@@ -1,5 +1,7 @@
 #! /usr/bin/env node
 
+export const USER_DIR = "users";
+
 import { start_service, ExitCodes } from "@the-stations-project/sdk";
 
 import create from "./create.js";
@@ -8,8 +10,6 @@ import get from "./get.js";
 import set from "./set.js";
 import auth from "./auth.js";
 import change_pswd from "./change_pswd.js";
-
-export const USER_DIR = "users";
 
 async function main(subcommand: string, args: string[]) {
 	switch (subcommand) {
