@@ -1,6 +1,8 @@
 import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 
-export default async function remove(USER_DIR: string, args: string[]) {
+import { USER_DIR } from "./index.js";
+
+export default async function remove(args: string[]) {
 	const unum = args[0];
 	const user_path = Registry.join_paths(USER_DIR, unum);
 	const timestamp = new Date().toISOString();

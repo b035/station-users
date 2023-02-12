@@ -9,16 +9,16 @@ import set from "./set.js";
 import auth from "./auth.js";
 import change_pswd from "./change_pswd.js";
 
-const USER_DIR = "users";
+export const USER_DIR = "users";
 
 async function main(subcommand: string, args: string[]) {
 	switch (subcommand) {
-		case "create": return await create(USER_DIR, args);
-		case "remove": return await remove(USER_DIR, args);
-		case "get": return await get(USER_DIR, args);
-		case "set": return await set(USER_DIR, args);
-		case "auth": return await auth(USER_DIR, args);
-		case "chpswd": return await change_pswd(USER_DIR, args);
+		case "create": return await create(args);
+		case "remove": return await remove(args);
+		case "get": return await get(args);
+		case "set": return await set(args);
+		case "auth": return await auth(args);
+		case "chpswd": return await change_pswd(args);
 
 		default: throw ExitCodes.ErrNoCommand;
 	}

@@ -1,6 +1,8 @@
 import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 
-export default async function set(USER_DIR: string, args: string[]) {
+import { USER_DIR } from "./index.js";
+
+export default async function set(args: string[]) {
 	const [ unum, prop, val ] = args;
 
 	//security

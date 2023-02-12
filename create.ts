@@ -2,7 +2,9 @@ import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
 import set from "./set.js";
 import change_pswd from "./change_pswd.js";
 
-export default async function create(USER_DIR: string, args: string[]) {
+import { USER_DIR } from "./index.js";
+
+export default async function create(args: string[]) {
 	const [ dispname, pswd ] = args;
 
 	if (dispname == undefined || pswd == undefined) throw "dispname or pswd missing.";
