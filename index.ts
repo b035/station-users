@@ -24,4 +24,4 @@ async function main(subcommand: string, args: string[]): Promise<Result<any, any
 	}
 }
 
-start_service(main).then((result: any) => console.log(result));
+start_service(main, (result) => console.log(result.to_string()));
