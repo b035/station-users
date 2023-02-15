@@ -1,8 +1,8 @@
-import { log, Registry } from "@the-stations-project/sdk";
+import { ExitCodes, log, Registry, Result } from "@the-stations-project/sdk";
 
 import { USER_DIR } from "./index.js";
 
-export default async function get(args: string[]) {
+export default async function get(args: string[]): Promise<Result<ExitCodes, string>> {
 	const [ unum, prop ] = args;
 
 	//security
@@ -12,5 +12,5 @@ export default async function get(args: string[]) {
 
 	const value = (await Registry.read(path)).or_panic().value!;
 
-	return value;
+	return new Result(ExitCodes.Ok, value);
 }

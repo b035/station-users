@@ -1,10 +1,10 @@
-import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
+import { Result, log, Registry, ExitCodes } from "@the-stations-project/sdk";
 import set from "./set.js";
 import change_pswd from "./change_pswd.js";
 
 import { USER_DIR } from "./index.js";
 
-export default async function create(args: string[]) {
+export default async function create(args: string[]): Promise<Result<ExitCodes, string>> {
 	const [ dispname, pswd ] = args;
 
 	if (dispname == undefined || pswd == undefined) throw "dispname or pswd missing.";
@@ -44,7 +44,7 @@ export default async function create(args: string[]) {
 	await change_pswd([unum, pswd]);
 	
 	log("ACTIVITY", `User management: created account "${unum}".`);
-	return unum;
+	return new Result(ExitCodes.Ok, unum);
 }
 
 function generate_number(dispname: string): string {

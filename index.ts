@@ -2,7 +2,7 @@
 
 export const USER_DIR = "users";
 
-import { start_service, ExitCodes } from "@the-stations-project/sdk";
+import { Result, start_service, ExitCodes } from "@the-stations-project/sdk";
 
 import create from "./create.js";
 import remove from "./remove.js";
@@ -11,7 +11,7 @@ import set from "./set.js";
 import auth from "./auth.js";
 import change_pswd from "./change_pswd.js";
 
-async function main(subcommand: string, args: string[]) {
+async function main(subcommand: string, args: string[]): Promise<Result<any, any>> {
 	switch (subcommand) {
 		case "create": return await create(args);
 		case "remove": return await remove(args);

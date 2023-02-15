@@ -1,8 +1,8 @@
-import { log, Registry, ExitCodes } from "@the-stations-project/sdk";
+import { log, Registry, ExitCodes, Result } from "@the-stations-project/sdk";
 
 import { USER_DIR } from "./index.js";
 
-export default async function remove(args: string[]) {
+export default async function remove(args: string[]): Promise<Result<ExitCodes, undefined>> {
 	const unum = args[0];
 	const user_path = Registry.join_paths(USER_DIR, unum);
 	const timestamp = new Date().toISOString();
@@ -15,5 +15,5 @@ export default async function remove(args: string[]) {
 	//block user number
 	(await Registry.write(user_path, timestamp)).or_panic();
 
-	return ExitCodes.Ok;
+	return new Result(ExitCodes.Ok, undefined);
 }
