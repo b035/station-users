@@ -8,6 +8,7 @@ import * as SDK from "@the-stations-project/sdk";
 async function main(subcommand: string, args: string[]) {
 	switch (subcommand) {
 		case "create": return await create(args[0], args[1]);
+		case "auth": return await auth(args[0], args[1]);
 		default: return new SDK.Result(SDK.ExitCodes.ErrUnknown, undefined);
 	}
 }
@@ -17,6 +18,7 @@ async function create(dispname: string, pswd: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, "");
 
 	/* safety */
+	//TODO use ErrMissingParameter
 	if (dispname == undefined || pswd == undefined) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
 
 	/* get unum root */
@@ -54,6 +56,21 @@ async function create(dispname: string, pswd: string) {
 	}
 
 	return result;
+}
+
+async function auth(unum: string, pswd: string) {
+	const result = new SDK.Result(SDK.ExitCodes.Ok, false);
+
+	/* get correct hash */
+	const hash_path = SDK.Registry.join_paths("usrman/users", unum, "hash");
+	const read_result = (await SDK.Registry.read(hash_path)).or_log_error();
+	if (read_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
+	const correct_hash = read_result.value!;
+
+	/* compare */
+	const is_correct = await Bcrypt.compare(pswd, correct_hash);
+
+	return result.finalize_with_value(is_correct);
 }
 
 /* HELPERS */
