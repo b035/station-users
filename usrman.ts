@@ -80,7 +80,7 @@ async function get_hash(string: string) {
 
 function convert_to_t9(string: string) {
 	function get_key(char: string) {
-		switch (char) {
+		switch (char.toLowerCase()) {
 			case "1": 
 				return "1";
 			case "2": case "a": case "b": case "c":
