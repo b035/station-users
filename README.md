@@ -1,2 +1,2 @@
-# station-user-management
+# station-users
 Manages user accounts.
