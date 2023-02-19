@@ -1,11 +1,11 @@
 {
   "name": "@the-stations-project/users",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Manages user accounts.",
   "main": "usrman.js",
   "bin": {
-    "usrman": "usrman.js",
-    "usrman-init": "init.js"
+    "users": "users.js",
+    "users-init": "init.js"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
