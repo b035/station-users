@@ -29,7 +29,7 @@ async function create(dispname: string, pswd: string) {
 	const unum_root = convert_to_t9(padded_dispname);
 
 	/* get highest suffix of unums with same root */
-	const user_list_result = (await SDK.Registry.ls("usrman/users"));
+	const user_list_result = (await SDK.Registry.ls("users"));
 	if (user_list_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
 	const all_users = user_list_result.value!;
 	const highest_suffix_with_same_root = all_users
@@ -45,7 +45,7 @@ async function create(dispname: string, pswd: string) {
 	const hash = await get_hash(pswd);
 
 	/* create user directory */
-	const usr_dir_path = SDK.Registry.join_paths("usrman/users", unum);
+	const usr_dir_path = SDK.Registry.join_paths("users", unum);
 	const dir_result = (await SDK.Registry.mkdir(usr_dir_path)).or_log_error();
 	if (dir_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
 
@@ -54,12 +54,12 @@ async function create(dispname: string, pswd: string) {
 		["dispname", dispname],
 		["hash", hash],
 	] as string[][]) {
-		(await SDK.Registry.write(SDK.Registry.join_paths("usrman/users", unum, path), content))
+		(await SDK.Registry.write(SDK.Registry.join_paths("users", unum, path), content))
 			.or_log_error()
 			.err(() => result.code = SDK.ExitCodes.ErrUnknown);
 	}
 
-	return result;
+	return result.finalize_with_value(unum);
 }
 
 async function auth(unum: string, pswd: string) {
@@ -69,7 +69,7 @@ async function auth(unum: string, pswd: string) {
 	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get correct hash */
-	const hash_path = SDK.Registry.join_paths("usrman/users", unum, "hash");
+	const hash_path = SDK.Registry.join_paths("users", unum, "hash");
 	const read_result = (await SDK.Registry.read(hash_path)).or_log_error();
 	if (read_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
 	const correct_hash = read_result.value!;
@@ -87,7 +87,7 @@ async function get(unum: string, prop: string) {
 	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get path */
-	const path = SDK.Registry.join_paths("usrman/users", unum, prop);
+	const path = SDK.Registry.join_paths("users", unum, prop);
 
 	/* read file */
 	const read_result = (await SDK.Registry.read(path)).or_log_error();
@@ -105,7 +105,7 @@ async function set(unum: string, prop: string, value: string) {
 	if (arguments.length < 3) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get path */
-	const path = SDK.Registry.join_paths("usrman/users", unum, prop);
+	const path = SDK.Registry.join_paths("users", unum, prop);
 
 	/* write file */
 	const write_result = (await SDK.Registry.write(path, value)).or_log_error();
@@ -131,7 +131,7 @@ async function close_account(unum: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
 
 	/* get path */
-	const path = SDK.Registry.join_paths("usrman/users/", unum);
+	const path = SDK.Registry.join_paths("users/", unum);
 
 	/* delete user */
 	const del_result = (await SDK.Registry.delete(path)).or_log_error();
