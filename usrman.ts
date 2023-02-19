@@ -25,7 +25,8 @@ async function create(dispname: string, pswd: string) {
 	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get unum root */
-	const unum_root = convert_to_t9(dispname);
+	const padded_dispname = dispname.padEnd(4, "0") //min-length of four characters;
+	const unum_root = convert_to_t9(padded_dispname);
 
 	/* get highest suffix of unums with same root */
 	const user_list_result = (await SDK.Registry.ls("usrman/users"));
