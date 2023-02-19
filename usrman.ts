@@ -9,6 +9,10 @@ async function main(subcommand: string, args: string[]) {
 	switch (subcommand) {
 		case "create": return await create(args[0], args[1]);
 		case "auth": return await auth(args[0], args[1]);
+		case "get": return await get(args[0], args[1]);
+		case "set": return await set(args[0], args[1], args[2]);
+		case "change_pswd": return await change_pswd(args[0], args[1]);
+		case "close_account": return await close_account(args[0]);
 		default: return new SDK.Result(SDK.ExitCodes.ErrUnknown, undefined);
 	}
 }
@@ -18,13 +22,12 @@ async function create(dispname: string, pswd: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, "");
 
 	/* safety */
-	//TODO use ErrMissingParameter
-	if (dispname == undefined || pswd == undefined) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
+	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get unum root */
 	const unum_root = convert_to_t9(dispname);
 
-	/* get all registered user numbers */
+	/* get highest suffix of unums with same root */
 	const user_list_result = (await SDK.Registry.ls("usrman/users"));
 	if (user_list_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
 	const all_users = user_list_result.value!;
@@ -61,6 +64,9 @@ async function create(dispname: string, pswd: string) {
 async function auth(unum: string, pswd: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, false);
 
+	/* safety */
+	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+
 	/* get correct hash */
 	const hash_path = SDK.Registry.join_paths("usrman/users", unum, "hash");
 	const read_result = (await SDK.Registry.read(hash_path)).or_log_error();
@@ -71,6 +77,71 @@ async function auth(unum: string, pswd: string) {
 	const is_correct = await Bcrypt.compare(pswd, correct_hash);
 
 	return result.finalize_with_value(is_correct);
+}
+
+async function get(unum: string, prop: string) {
+	const result = new SDK.Result(SDK.ExitCodes.Ok, "");
+
+	/* safety */
+	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+
+	/* get path */
+	const path = SDK.Registry.join_paths("usrman/users", unum, prop);
+
+	/* read file */
+	const read_result = (await SDK.Registry.read(path)).or_log_error();
+	if (read_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown); 
+	const text = read_result.value!;
+
+	/* return */
+	return result.finalize_with_value(text);
+}
+
+async function set(unum: string, prop: string, value: string) {
+	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
+
+	/* safety */
+	if (arguments.length < 3) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+
+	/* get path */
+	const path = SDK.Registry.join_paths("usrman/users", unum, prop);
+
+	/* write file */
+	const write_result = (await SDK.Registry.write(path, value)).or_log_error();
+	if (write_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown); 
+	
+	return result;
+}
+
+async function change_pswd(unum: string, new_pswd: string) {
+	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
+
+	/* hash password */
+	const hash = await get_hash(new_pswd);
+
+	/* store new hash */
+	(await set(unum, "hash", hash)).or_log_error()
+		.err(() => result.finalize_with_code(SDK.ExitCodes.ErrUnknown));
+
+	return result;
+}
+
+async function close_account(unum: string) {
+	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
+
+	/* get path */
+	const path = SDK.Registry.join_paths("usrman/users/", unum);
+
+	/* delete user */
+	const del_result = (await SDK.Registry.delete(path)).or_log_error();
+	if (del_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
+
+	/* reserve username and store deletion date */
+	const timestamp = new Date().toISOString();
+	const write_result = (await SDK.Registry.write(path, timestamp)).or_log_error();
+	if (write_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
+
+	return result;
 }
 
 /* HELPERS */
