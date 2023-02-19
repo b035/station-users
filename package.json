@@ -1,6 +1,6 @@
 {
-  "name": "@the-stations-project/user-management",
-  "version": "0.1.0-beta",
+  "name": "@the-stations-project/users",
+  "version": "0.0.1",
   "description": "Manages user accounts.",
   "main": "usrman.js",
   "bin": {
