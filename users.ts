@@ -124,6 +124,9 @@ async function change_pswd(uname: string, new_pswd: string) {
 async function close_account(uname: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
 
+	/* safety */
+	if (arguments.length < 1) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+
 	/* get path */
 	const path = SDK.Registry.join_paths("users/", uname);
 
