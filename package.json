@@ -26,7 +26,7 @@
   },
   "homepage": "https://github.com/b035/station-user-management#readme",
   "dependencies": {
-    "@the-stations-project/sdk": "^0.2.1",
+    "@the-stations-project/sdk": "^0.2.3",
     "@types/bcrypt": "^5.0.0",
     "bcrypt": "^5.1.0"
   }

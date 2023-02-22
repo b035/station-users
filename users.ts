@@ -29,7 +29,7 @@ async function create(dispname: string, uname: string, pswd: string) {
 	const result = new SDK.Result(UserCreationExitCodes.Ok, "");
 
 	/* safety */
-	if (arguments.length < 3) return result.finalize_with_code(UserCreationExitCodes.ErrMissingParameter);
+	if (SDK.arguments_missing(arguments, 3)) return result.finalize_with_code(UserCreationExitCodes.ErrMissingParameter);
 
 	/* prepare */
 	const hash = await get_hash(pswd);
@@ -60,7 +60,7 @@ async function auth(uname: string, pswd: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, false);
 
 	/* safety */
-	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+	if (SDK.arguments_missing(arguments, 2)) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get correct hash */
 	const hash_path = SDK.Registry.join_paths("users", uname, "hash");
@@ -78,7 +78,7 @@ async function get(uname: string, prop: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, "");
 
 	/* safety */
-	if (arguments.length < 2) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+	if (SDK.arguments_missing(arguments, 2)) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get path */
 	const path = SDK.Registry.join_paths("users", uname, prop);
@@ -96,7 +96,7 @@ async function set(uname: string, prop: string, value: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
 
 	/* safety */
-	if (arguments.length < 3) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+	if (SDK.arguments_missing(arguments, 3)) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get path */
 	const path = SDK.Registry.join_paths("users", uname, prop);
@@ -125,7 +125,7 @@ async function close_account(uname: string) {
 	const result = new SDK.Result(SDK.ExitCodes.Ok, undefined);
 
 	/* safety */
-	if (arguments.length < 1) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
+	if (SDK.arguments_missing(arguments, 1)) return result.finalize_with_code(SDK.ExitCodes.ErrMissingParameter);
 
 	/* get path */
 	const path = SDK.Registry.join_paths("users/", uname);
