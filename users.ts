@@ -147,4 +147,4 @@ async function get_hash(string: string) {
 	return (await Bcrypt.hash(string, 10));
 }
 
-SDK.start_service(main, (result) => console.log(result.to_string()));
+SDK.start_module(main, (result) => console.log(result.to_string()));

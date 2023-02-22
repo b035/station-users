@@ -12,4 +12,4 @@ async function init() {
 	return result;
 }
 
-SDK.start_service(init, (result) => console.log(result.to_string()));
+init().then((result) => console.log(result.to_string()));
