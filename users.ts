@@ -53,6 +53,9 @@ async function create(dispname: string, uname: string, pswd: string) {
 			.err(() => result.code = UserCreationExitCodes.ErrUnknown);
 	}
 
+	/* log */
+	SDK.log(result.has_failed ? "ERROR" : "ACTIVITY", `Users: create "${uname}".`);
+
 	return result.finalize_with_value(uname);
 }
 
@@ -70,6 +73,9 @@ async function auth(uname: string, pswd: string) {
 
 	/* compare */
 	const is_correct = await Bcrypt.compare(pswd, correct_hash);
+
+	/* log */
+	SDK.log(result.has_failed ? "ERROR" : "ACTIVITY", `Users: authenticate "${uname}" -> ${result.value}.`);
 
 	return result.finalize_with_value(is_correct);
 }
@@ -104,6 +110,9 @@ async function set(uname: string, prop: string, value: string) {
 	/* write file */
 	const write_result = (await SDK.Registry.write(path, value)).or_log_error();
 	if (write_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown); 
+
+	/* log */
+	SDK.log(result.has_failed ? "ERROR" : "ACTIVITY", `Users: set "${prop}" for "${uname}" -> ${value}.`);
 	
 	return result;
 }
@@ -117,6 +126,9 @@ async function change_pswd(uname: string, new_pswd: string) {
 	/* store new hash */
 	(await set(uname, "hash", hash)).or_log_error()
 		.err(() => result.finalize_with_code(SDK.ExitCodes.ErrUnknown));
+
+	/* log */
+	SDK.log(result.has_failed ? "ERROR" : "ACTIVITY", `Users: change password for "${uname}".`);
 
 	return result;
 }
@@ -138,6 +150,9 @@ async function close_account(uname: string) {
 	const timestamp = new Date().toISOString();
 	const write_result = (await SDK.Registry.write(path, timestamp)).or_log_error();
 	if (write_result.has_failed) return result.finalize_with_code(SDK.ExitCodes.ErrUnknown);
+
+	/* log */
+	SDK.log(result.has_failed ? "ERROR" : "ACTIVITY", `Users: close account "${uname}".`);
 
 	return result;
 }
